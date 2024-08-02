@@ -1,0 +1,1 @@
+# fe-events-platform
