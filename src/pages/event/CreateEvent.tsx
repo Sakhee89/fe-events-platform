@@ -74,7 +74,7 @@ const CreateEvent = () => {
         authToken
       );
 
-      navigate(-1);
+      navigate("/dashboard");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
@@ -88,7 +88,7 @@ const CreateEvent = () => {
   return session ? (
     <div className="w-full gap-1 px-1">
       <div className="flex justify-end">
-        <Button className="bg-red-500" onClick={() => navigate(-1)}>
+        <Button className="bg-red-500" onClick={() => navigate("/dashboard")}>
           Cancel
         </Button>
       </div>

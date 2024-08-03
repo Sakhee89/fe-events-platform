@@ -98,3 +98,18 @@ export const deleteEvent = async (id: string, token: string) => {
     },
   });
 };
+
+export const addAttendeeToEvent = async (
+  eventId: string,
+  authToken: string
+) => {
+  return backendApi.patch(
+    `/api/events/attend/${eventId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+};

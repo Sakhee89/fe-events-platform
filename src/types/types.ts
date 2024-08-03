@@ -26,15 +26,21 @@ export interface GoogleEvent {
   summary: string;
   description: string;
   start: {
-    dateTime: Date;
+    dateTime: Date | string;
     timeZone: string;
   };
   end: {
-    dateTime: Date;
+    dateTime: Date | string;
     timeZone: string;
   };
   location: string;
-  attendees?: string[];
+  attendees?: Attendee[];
+}
+
+export interface Attendee {
+  email: string;
+  responseStatus: string;
+  comment?: string;
 }
 
 export interface SearchParams {
@@ -43,4 +49,46 @@ export interface SearchParams {
   theme?: string;
   priceType?: string;
   date?: string;
+}
+
+export interface Attendee {
+  email: string;
+  responseStatus: string;
+  comment?: string;
+}
+
+export interface GoogleCalendarEvent {
+  kind: string;
+  etag: string;
+  id: string;
+  status: string;
+  htmlLink: string;
+  created: string;
+  updated: string;
+  summary: string;
+  description: string;
+  location: string;
+  creator: {
+    email: string;
+    self: boolean;
+  };
+  organizer: {
+    email: string;
+    self: boolean;
+  };
+  start: {
+    dateTime: string;
+    timeZone: string;
+  };
+  end: {
+    dateTime: string;
+    timeZone: string;
+  };
+  iCalUID: string;
+  sequence: number;
+  attendees: Attendee[] | undefined;
+  reminders: {
+    useDefault: boolean;
+  };
+  eventType: string;
 }

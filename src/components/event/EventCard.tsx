@@ -7,7 +7,7 @@ interface EventCardProp {
 const EventCard = ({ event }: EventCardProp) => {
   return (
     <Link
-      to={`/event/edit/${event._id}`}
+      to={`/event/${event._id}`}
       className="w-full border-r px-2 py-5 border border-white hover:bg-slate-200 hover:cursor-pointer"
     >
       <div className="flex py-2 justify-between">
