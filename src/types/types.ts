@@ -36,3 +36,11 @@ export interface GoogleEvent {
   location: string;
   attendees?: string[];
 }
+
+export interface SearchParams {
+  title?: string;
+  location?: string;
+  theme?: string;
+  priceType?: string;
+  date?: string;
+}

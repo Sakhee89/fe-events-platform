@@ -10,6 +10,7 @@ import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import ErrorMessage from "../../components/form/ErrorMessage";
 import { patchCalendarEventRequest } from "../../utils/googleCalendarUtil";
 import { AxiosError } from "axios";
+import DeleteEventButton from "../../components/button/DeleteEventButton";
 
 const EditEvent = () => {
   const { id } = useParams();
@@ -131,6 +132,10 @@ const EditEvent = () => {
     });
   }, [id, setEditEvent]);
 
+  const handleDeleteSuccess = async () => {
+    navigate("/dashboard");
+  };
+
   return isLoadingEditEvent ? (
     <Loading />
   ) : (
@@ -234,6 +239,13 @@ const EditEvent = () => {
           <hr />
           <Button type="submit">Update Calendar Event</Button>
         </form>
+      </div>
+      <div className="flex justify-center pt-5">
+        <DeleteEventButton
+          eventId={id!}
+          userToken={session?.access_token!}
+          onDeleteSuccess={handleDeleteSuccess}
+        />
       </div>
     </div>
   );

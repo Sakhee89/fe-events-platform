@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../components/button/Button";
 import UserEvents from "../components/event/UserEvents";
+import EventSearchBar from "../components/event/EventSearch";
 
 type DashboardViewType =
   | "SEARCH"
@@ -37,13 +38,15 @@ const Dashboard = () => {
           User's event
         </Button>
       </div>
-      <div className="bg-slate-300 col-span-3 ">
-        {currentView === "USER_CREATED_EVENT" ? (
-          <UserEvents />
-        ) : currentView === "USER_SUBSCRIBED_EVENT" ? (
-          <>USER_SUBSCRIBED_EVENT</>
-        ) : (
-          <>SEARCH</>
+      <div className="bg-slate-300 col-span-3 p-4">
+        {currentView === "USER_CREATED_EVENT" && <UserEvents />}
+        {currentView === "USER_SUBSCRIBED_EVENT" && (
+          <div>USER_SUBSCRIBED_EVENT</div>
+        )}
+        {currentView === "SEARCH" && (
+          <>
+            <EventSearchBar />
+          </>
         )}
       </div>
     </div>

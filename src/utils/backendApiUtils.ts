@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Event, User } from "../types/types";
+import { Event, SearchParams, User } from "../types/types";
 
 const backendApi = axios.create({
   baseURL: "http://localhost:3333/",
@@ -21,9 +21,10 @@ export const createEvent = async (
     },
   });
 };
-
-export const getEvents = async (): Promise<{ data: { events: Event[] } }> => {
-  return backendApi.get("/api/events");
+export const getEvents = async (
+  params: SearchParams = {}
+): Promise<{ data: { events: Event[] } }> => {
+  return backendApi.get("/api/events", { params });
 };
 
 export const getEventById = async (
@@ -87,4 +88,13 @@ export const createUser = async (newUser: {
       },
     }
   );
+};
+
+export const deleteEvent = async (id: string, token: string) => {
+  console.log(id);
+  await backendApi.delete(`/api/events/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
