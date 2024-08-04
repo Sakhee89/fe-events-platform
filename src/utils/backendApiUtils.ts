@@ -2,7 +2,7 @@ import axios from "axios";
 import { Event, SearchParams, User } from "../types/types";
 
 const backendApi = axios.create({
-  baseURL: "http://localhost:3333/",
+  baseURL: process.env.REACT_APP_BACKEND_URL!,
 });
 
 export const createToken = async (code: string) => {
