@@ -5,6 +5,20 @@ const googleCalendarApi = axios.create({
   baseURL: "https://www.googleapis.com/calendar/v3/calendars/primary",
 });
 
+export const getCalendarEventRequest = async (
+  eventId: string,
+  providerToken: string
+) => {
+  return await googleCalendarApi.get<GoogleCalendarEvent>(
+    "/events/" + eventId,
+    {
+      headers: {
+        Authorization: `Bearer ` + providerToken,
+      },
+    }
+  );
+};
+
 export const createCalendarEventRequest = async (
   event: GoogleEvent,
   providerToken: string
@@ -26,18 +40,4 @@ export const patchCalendarEventRequest = async (
       Authorization: `Bearer ` + providerToken,
     },
   });
-};
-
-export const getCalendarEventRequest = async (
-  eventId: string,
-  providerToken: string
-) => {
-  return await googleCalendarApi.get<GoogleCalendarEvent>(
-    "/events/" + eventId,
-    {
-      headers: {
-        Authorization: `Bearer ` + providerToken,
-      },
-    }
-  );
 };

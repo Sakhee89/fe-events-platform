@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { addAttendeeToEvent, getEventById } from "../../utils/backendApiUtils";
+import {
+  addAttendeeToEvent,
+  getEventById,
+  getPaymentIntent,
+} from "../../utils/backendApiUtils";
 import { Attendee, Event } from "../../types/types";
 import Loading from "../../components/loading/Loading";
 import Button from "../../components/button/Button";
@@ -10,6 +14,11 @@ import {
 } from "../../utils/googleCalendarUtil";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { AxiosError } from "axios";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import Checkout from "./Checkout";
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_API_KEY!);
 
 const ViewEvent = () => {
   const { id } = useParams();
@@ -31,6 +40,8 @@ const ViewEvent = () => {
 
   const [isLoadingEvent, setLoadingEvent] = useState<boolean>(true);
 
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+
   useEffect(() => {
     getEventById(id!).then((res) => {
       setEvent(res.data.event);
@@ -50,7 +61,6 @@ const ViewEvent = () => {
     const authToken = session!.access_token!;
 
     try {
-      //getCalendarEvent
       const getCalendarEventResponse = await getCalendarEventRequest(
         event.eventId,
         providerToken
@@ -59,8 +69,11 @@ const ViewEvent = () => {
       console.log("getCalendarEventResponse", getCalendarEventResponse);
       const currentEvent = getCalendarEventResponse.data;
 
+      if (currentEvent.attendees === undefined) {
+        currentEvent.attendees = [];
+      }
+
       if (
-        currentEvent.attendees &&
         currentEvent.attendees
           .map((attendee) => attendee.email)
           .includes(session?.user.email!)
@@ -68,20 +81,13 @@ const ViewEvent = () => {
         alert(`${session?.user.email} is already attending`);
         return;
       }
-      currentEvent.attendees = currentEvent.attendees
-        ? ([
-            { ...currentEvent.attendees },
-            {
-              email: session?.user.email!,
-              responseStatus: "accepted",
-            },
-          ] as Attendee[])
-        : [
-            {
-              email: session?.user.email!,
-              responseStatus: "accepted",
-            },
-          ];
+      currentEvent.attendees = [
+        ...currentEvent.attendees,
+        {
+          email: session?.user.email!,
+          responseStatus: "accepted",
+        },
+      ];
 
       console.log("Event to update", currentEvent);
 
@@ -98,7 +104,7 @@ const ViewEvent = () => {
         event.eventId,
         providerToken
       );
-      //updateBackend
+
       const backendAttendeeResponse = await addAttendeeToEvent(id!, authToken);
 
       console.log("backendAttendeeResponse", backendAttendeeResponse.data);
@@ -114,6 +120,28 @@ const ViewEvent = () => {
     }
   };
 
+  const purchaseEnrollmentHandler = async () => {
+    console.log(purchaseEnrollmentHandler);
+
+    const authToken = session!.access_token!;
+
+    try {
+      const stripePaymentIntent = await getPaymentIntent(id!, authToken);
+      setClientSecret(stripePaymentIntent.data.clientSecret);
+    } catch (error) {
+      console.log(error);
+
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          alert("Session timeout - Please relogin");
+          await supabase.auth.signOut();
+        } else {
+          alert("Failed to start payment");
+        }
+      }
+    }
+  };
+
   return isLoadingEvent ? (
     <Loading />
   ) : (
@@ -121,9 +149,9 @@ const ViewEvent = () => {
       <div className="flex justify-between items-center">
         <div className="text-2xl font-bold py-3">{event.title}</div>
         {event.price ? (
-          <>
+          <div>
             <div>£{event.price} entry fee</div>
-          </>
+          </div>
         ) : (
           <div className="text-2xl font-bold text-green-600">FREE</div>
         )}
@@ -139,7 +167,29 @@ const ViewEvent = () => {
       <hr />
       <div className="text-lg py-2">{event.description}</div>
       <div className="flex justify-end">
-        <Button onClick={() => attendHandler()}>Attend</Button>
+        {event.attendees && event.attendees.includes(session?.user.email!) ? (
+          <p>You are attending the event</p>
+        ) : clientSecret ? (
+          <Elements
+            stripe={stripePromise}
+            options={{
+              clientSecret,
+            }}
+          >
+            <Checkout id={id!} />
+          </Elements>
+        ) : event.price ? (
+          <Button
+            label="PurchaseEnrollment"
+            onClick={() => purchaseEnrollmentHandler()}
+          >
+            Purchase enrollment
+          </Button>
+        ) : (
+          <Button label="Attend" onClick={() => attendHandler()}>
+            Attend
+          </Button>
+        )}
       </div>
     </div>
   );

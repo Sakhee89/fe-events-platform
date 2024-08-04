@@ -6,12 +6,13 @@ import Home from "./pages/Home";
 import CreateEvent from "./pages/event/CreateEvent";
 import EditEvent from "./pages/event/EditEvent";
 import ViewEvent from "./pages/event/ViewEvent";
+import EnrolledEvent from "./pages/event/EnrolledEvent";
 
 function App() {
   const { isLoading } = useSessionContext();
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <p>Loading...</p>;
   }
 
   return (
@@ -22,7 +23,8 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="event/create" element={<CreateEvent />} />
           <Route path="event/edit/:id" element={<EditEvent />} />
-          <Route path="event/:id" element={<ViewEvent />} />
+          <Route path="event/view/:id" element={<ViewEvent />} />
+          <Route path="event/enrolled/:id" element={<EnrolledEvent />} />
         </Route>
       </Routes>
     </div>

@@ -15,7 +15,7 @@ export interface Event {
 }
 
 export interface User {
-  firebaseUid: string;
+  uid: string;
   name: string;
   email: string;
   picture: string;

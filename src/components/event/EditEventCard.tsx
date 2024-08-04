@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 import { Event } from "../../types/types";
 interface EventCardProp {
   event: Event;
@@ -6,7 +6,8 @@ interface EventCardProp {
 
 const EventCard = ({ event }: EventCardProp) => {
   return (
-    <div
+    <Link
+      to={`/event/edit/${event._id}`}
       className="w-full border-r px-2 py-5 border border-white hover:bg-slate-200 hover:cursor-pointer"
     >
       <div className="flex py-2 justify-between">
@@ -19,7 +20,7 @@ const EventCard = ({ event }: EventCardProp) => {
         <b>Location:</b> {event.location}
       </p>
       <p>{event.description}</p>
-    </div>
+    </Link>
   );
 };
 

@@ -48,12 +48,14 @@ const Navbar = () => {
   }, [supabase.auth]);
 
   return (
-    <div className="w-full bg-slate-200">
+    <nav className="w-full bg-slate-200">
       {session ? (
-        <div>
+        <section>
           <div className="flex justify-between items-center px-1 py-2">
-            <h2>Hey there {session.user.email}</h2>
-            <Button onClick={() => signOut()}>Sign Out</Button>
+            <h2>Signed in as {session.user.email}</h2>
+            <Button label="signOut" onClick={() => signOut()}>
+              Sign Out
+            </Button>
           </div>
           <div className="flex justify-center bg-slate-300 gap-4">
             <Link className="underline" to="/">
@@ -63,13 +65,15 @@ const Navbar = () => {
               Dashboard
             </Link>
           </div>
-        </div>
+        </section>
       ) : (
-        <div className="flex justify-end items-center px-1 py-2">
-          <Button onClick={() => googleSignIn()}>Sign In With Google</Button>
-        </div>
+        <section className="flex justify-end items-center px-1 py-2">
+          <Button label="GoogleSignIn" onClick={() => googleSignIn()}>
+            Sign In With Google
+          </Button>
+        </section>
       )}
-    </div>
+    </nav>
   );
 };
 

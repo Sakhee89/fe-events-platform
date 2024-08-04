@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getEventById, updateEvent } from "../../utils/backendApiUtils";
 import { Event, GoogleEvent } from "../../types/types";
@@ -140,18 +140,23 @@ const EditEvent = () => {
   ) : (
     <div className="w-full gap-1 px-1">
       <div className="flex justify-end">
-        <Button className="bg-red-500" onClick={() => navigate("/dashboard")}>
+        <Button
+          label="Dashboard"
+          className="bg-red-500"
+          onClick={() => navigate("/dashboard")}
+        >
           Cancel
         </Button>
       </div>
       <div className="max-w-[560px] mx-auto pt-10">
         <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
-          <>
+          <div>
             <label>Title:</label>
             <input
-              className={`border-2 p-2 border-gray-600 rounded-lg ${
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
                 errors.title && "border-red-600"
               }`}
+              placeholder="Enter event title"
               defaultValue={editEvent.title}
               {...register("title", { required: true, minLength: 5 })}
             />
@@ -163,13 +168,14 @@ const EditEvent = () => {
                 Title is required to be at least 5 characters
               </ErrorMessage>
             )}
-          </>
-          <>
+          </div>
+          <div>
             <label>Description:</label>
             <input
-              className={`border-2 p-2 border-gray-600 rounded-lg ${
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
                 errors.title && "border-red-600"
               }`}
+              placeholder="Enter event description"
               defaultValue={editEvent.description}
               {...register("description", { required: true, minLength: 5 })}
             />
@@ -181,13 +187,14 @@ const EditEvent = () => {
                 Description is required to be at least 5 characters
               </ErrorMessage>
             )}
-          </>
-          <>
+          </div>
+          <div>
             <label>Location:</label>
             <input
-              className={`border-2 p-2 border-gray-600 rounded-lg ${
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
                 errors.title && "border-red-600"
               }`}
+              placeholder="Enter event location"
               defaultValue={editEvent.location}
               {...register("location", { required: true, minLength: 2 })}
             />
@@ -199,23 +206,25 @@ const EditEvent = () => {
                 Location is required to be at least 2 characters
               </ErrorMessage>
             )}
-          </>
-          <>
+          </div>
+          <div>
             <label>Price (£):</label>
             <input
               type="number"
               min={0}
-              className={`border-2 p-2 border-gray-600 rounded-lg`}
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full`}
+              placeholder="Enter event price"
               defaultValue={editEvent.price}
               {...register("price", { min: 0 })}
             />
-          </>
-          <>
+          </div>
+          <div>
             <label>Theme:</label>
             <input
-              className={`border-2 p-2 border-gray-600 rounded-lg ${
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
                 errors.title && "border-red-600"
               }`}
+              placeholder="Enter event theme"
               defaultValue={editEvent.theme}
               {...register("theme", { required: true, minLength: 2 })}
             />
@@ -227,16 +236,18 @@ const EditEvent = () => {
                 Theme is required to be at least 2 characters
               </ErrorMessage>
             )}
-          </>
-          <>
+          </div>
+          <div>
             <label>Date (Start to end):</label>
             <div className="pt-2">
               <Datepicker value={date} onChange={(date) => setDate(date)} />
             </div>
-          </>
+          </div>
           {dateError && <ErrorMessage>{dateError}</ErrorMessage>}
           <hr />
-          <Button type="submit">Update Calendar Event</Button>
+          <Button label="UpdateCalendarEvent" type="submit">
+            Update Calendar Event
+          </Button>
         </form>
       </div>
       <div className="flex justify-center pt-5">

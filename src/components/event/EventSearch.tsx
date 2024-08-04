@@ -3,6 +3,7 @@ import EventCard from "./EventCard";
 import { Event } from "../../types/types";
 import Button from "../button/Button";
 import { getEvents } from "../../utils/backendApiUtils";
+import { Link } from "react-router-dom";
 
 const EventSearchBar = () => {
   const [searchParams, setSearchParams] = useState({
@@ -72,14 +73,18 @@ const EventSearchBar = () => {
           value={searchParams.date}
           onChange={handleInputChange}
         />
-        <Button onClick={handleSearch}>Search</Button>
+        <Button label="search" onClick={handleSearch}>
+          Search
+        </Button>
       </div>
 
       <section className="mt-8">
         {searchResults.length > 0 ? (
           <div className="grid grid-cols-2 gap-10 px-3">
             {searchResults.map((event: Event) => (
-              <EventCard key={event._id} event={event} />
+              <Link key={event._id} to={`/event/view/${event._id}`}>
+                <EventCard event={event} />
+              </Link>
             ))}
           </div>
         ) : (

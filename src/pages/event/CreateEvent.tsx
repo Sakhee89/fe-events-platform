@@ -88,18 +88,26 @@ const CreateEvent = () => {
   return session ? (
     <div className="w-full gap-1 px-1">
       <div className="flex justify-end">
-        <Button className="bg-red-500" onClick={() => navigate("/dashboard")}>
+        <Button
+          label="Dashboard"
+          className="bg-red-500"
+          onClick={() => navigate("/dashboard")}
+        >
           Cancel
         </Button>
       </div>
       <div className="max-w-[560px] mx-auto pt-10">
-        <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
-          <>
+        <form
+          className="flex flex-col gap-2 justify-end"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div>
             <label>Title:</label>
             <input
-              className={`border-2 p-2 border-gray-600 rounded-lg ${
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
                 errors.title && "border-red-600"
               }`}
+              placeholder="Enter event title"
               defaultValue={""}
               {...register("title", { required: true, minLength: 5 })}
             />
@@ -111,13 +119,14 @@ const CreateEvent = () => {
                 Title is required to be at least 5 characters
               </ErrorMessage>
             )}
-          </>
-          <>
+          </div>
+          <div>
             <label>Description:</label>
             <input
-              className={`border-2 p-2 border-gray-600 rounded-lg ${
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
                 errors.title && "border-red-600"
               }`}
+              placeholder="Enter event description"
               defaultValue={""}
               {...register("description", { required: true, minLength: 5 })}
             />
@@ -129,14 +138,15 @@ const CreateEvent = () => {
                 Description is required to be at least 5 characters
               </ErrorMessage>
             )}
-          </>
-          <>
+          </div>
+          <div>
             <label>Location:</label>
             <input
-              className={`border-2 p-2 border-gray-600 rounded-lg ${
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
                 errors.title && "border-red-600"
               }`}
               defaultValue={""}
+              placeholder="Enter event location"
               {...register("location", { required: true, minLength: 2 })}
             />
             {errors.location?.type === "required" && (
@@ -147,23 +157,25 @@ const CreateEvent = () => {
                 Location is required to be at least 2 characters
               </ErrorMessage>
             )}
-          </>
-          <>
+          </div>
+          <div>
             <label>Price (£):</label>
             <input
               type="number"
               min={0}
-              className={`border-2 p-2 border-gray-600 rounded-lg`}
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full`}
+              placeholder="Enter event price"
               defaultValue={0}
               {...register("price", { min: 0 })}
             />
-          </>
-          <>
+          </div>
+          <div>
             <label>Theme:</label>
             <input
-              className={`border-2 p-2 border-gray-600 rounded-lg ${
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
                 errors.title && "border-red-600"
               }`}
+              placeholder="Enter event theme"
               defaultValue={""}
               {...register("theme", { required: true, minLength: 2 })}
             />
@@ -175,21 +187,23 @@ const CreateEvent = () => {
                 Theme is required to be at least 2 characters
               </ErrorMessage>
             )}
-          </>
-          <>
+          </div>
+          <div>
             <label>Date (Start to end):</label>
             <div className="pt-2">
               <Datepicker value={date} onChange={(date) => setDate(date)} />
             </div>
-          </>
+          </div>
           {dateError && <ErrorMessage>{dateError}</ErrorMessage>}
           <hr />
-          <Button type="submit">Create Calendar Event</Button>
+          <Button label="CreateCalendarEvent" type="submit">
+            Create Calendar Event
+          </Button>
         </form>
       </div>
     </div>
   ) : (
-    <></>
+    <div></div>
   );
 };
 

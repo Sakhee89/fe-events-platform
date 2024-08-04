@@ -35,12 +35,14 @@ const UserEvents = () => {
       <div className="flex item- justify-between pb-5 pt-1 px-1">
         <h1 className="text-2xl">User's event</h1>
         <Link to={`/event/create`}>
-          <Button>Create</Button>
+          <Button label="Create">Create</Button>
         </Link>
       </div>
       <div className="grid grid-cols-1 p-1">
         {eventsByUser.map((event) => (
-          <EventCard key={`${event._id}`} event={event} />
+          <Link key={`${event._id}`} to={`/event/edit/${event._id}`}>
+            <EventCard event={event} />
+          </Link>
         ))}
       </div>
     </section>

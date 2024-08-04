@@ -6,6 +6,8 @@ import { createClient } from "@supabase/supabase-js";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { BrowserRouter } from "react-router-dom";
 
+import "@stripe/stripe-js";
+
 const supabase = createClient(
   process.env.REACT_APP_SUPABASE_URL!,
   process.env.REACT_APP_SUPABASE_KEY!,

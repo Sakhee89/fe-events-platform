@@ -21,6 +21,7 @@ export const createEvent = async (
     },
   });
 };
+
 export const getEvents = async (
   params: SearchParams = {}
 ): Promise<{ data: { events: Event[] } }> => {
@@ -49,22 +50,12 @@ export const updateEvent = async (
   event: Omit<Event, "_id" | "createdBy" | "__v">,
   authToken: string
 ): Promise<{ data: { events: Event[] } }> => {
-  return backendApi.put(`/api/events/update/${eventId}`, event, {
+  return backendApi.put(`/api/events/${eventId}`, event, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
   });
 };
-
-// export const getUserById = async (
-//   user: FirebaseUser
-// ): Promise<{ data: { user: User } }> => {
-//   return backendApi.get(`api/users/${user.uid}`, {
-//     headers: {
-//       Authorization: `Bearer ${await user.getIdToken()}`,
-//     },
-//   });
-// };
 
 export const createUser = async (newUser: {
   uid: string;
@@ -76,7 +67,7 @@ export const createUser = async (newUser: {
   return backendApi.post(
     `api/users`,
     {
-      firebaseUid: newUser.uid,
+      uid: newUser.uid,
       name: newUser.displayName,
       email: newUser.email,
       picture: newUser.photoURL,
@@ -112,4 +103,22 @@ export const addAttendeeToEvent = async (
       },
     }
   );
+};
+
+export const getPaymentIntent = async (eventId: string, authToken: string) => {
+  return backendApi.get(`/api/payment/event/${eventId}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+};
+
+export const getEventsbyAttendee = async (
+  authToken: string
+): Promise<{ data: { events: Event[] } }> => {
+  return backendApi.get(`/api/events/by/attendee`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
 };
