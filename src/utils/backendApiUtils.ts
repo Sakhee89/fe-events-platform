@@ -76,6 +76,7 @@ export const createUser = async (newUser: {
     {
       headers: {
         Authorization: `Bearer ${newUser.authToken}`,
+        "Access-Control-Allow-Origin": "*",
       },
     }
   );
