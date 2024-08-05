@@ -11,8 +11,7 @@ type DashboardViewType =
   | "EDIT_EVENT";
 
 const Dashboard = () => {
-  const [currentView, setCurrentView] =
-    useState<DashboardViewType>("USER_CREATED_EVENT");
+  const [currentView, setCurrentView] = useState<DashboardViewType>("SEARCH");
 
   return (
     <div className="grid grid-cols-4">

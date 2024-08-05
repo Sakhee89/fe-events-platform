@@ -4,6 +4,7 @@ import { Event } from "../../types/types";
 import Button from "../button/Button";
 import { getEvents } from "../../utils/backendApiUtils";
 import { Link } from "react-router-dom";
+import Loading from "../loading/Loading";
 
 const EventSearchBar = () => {
   const [searchParams, setSearchParams] = useState({
@@ -14,6 +15,7 @@ const EventSearchBar = () => {
     date: "",
   });
   const [searchResults, setSearchResults] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -26,11 +28,14 @@ const EventSearchBar = () => {
   };
 
   const handleSearch = async () => {
+    setLoading(true);
     try {
       const response = await getEvents(searchParams);
       setSearchResults(response.data.events);
     } catch (error) {
       console.error("Error fetching search results:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,8 +78,8 @@ const EventSearchBar = () => {
           value={searchParams.date}
           onChange={handleInputChange}
         />
-        <Button label="search" onClick={handleSearch}>
-          Search
+        <Button disabled={loading} label="search" onClick={handleSearch}>
+          {loading ? <Loading /> : "Search"}
         </Button>
       </div>
 

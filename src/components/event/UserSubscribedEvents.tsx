@@ -7,6 +7,7 @@ import UpcomingEventCard from "./UpcomingEventCard";
 const UserSubscribedEvents = () => {
   const session = useSession();
   const [eventsByAttendee, setEventsByAttendee] = useState<Event[]>([]);
+  const [loading, setLoading] = useState<Boolean>(true);
 
   useEffect(() => {
     if (!session) {
@@ -19,6 +20,8 @@ const UserSubscribedEvents = () => {
         setEventsByAttendee(res.data.events);
       } catch (error) {
         console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -27,7 +30,9 @@ const UserSubscribedEvents = () => {
 
   return (
     <div>
-      {eventsByAttendee ? (
+      {loading ? (
+        <p>Loading...</p>
+      ) : eventsByAttendee ? (
         <div>
           <div className="pb-5 pt-1">
             <h1 className="text-2xl">Upcoming event</h1>
