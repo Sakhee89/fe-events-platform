@@ -33,7 +33,8 @@ const DeleteEventButton: React.FC<DeleteEventButtonProps> = ({
   };
 
   return (
-    <Button label="delete"
+    <Button
+      label="delete"
       className="w-full bg-red-600 hover:bg-red-400 max-w-xl"
       onClick={handleDelete}
       disabled={loading}

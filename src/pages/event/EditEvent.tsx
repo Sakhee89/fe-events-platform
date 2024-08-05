@@ -126,143 +126,129 @@ const EditEvent = () => {
     navigate("/dashboard");
   };
 
-  if (!session) {
-    return <Loading />;
-  }
-
-  console.log(session?.user);
-  return (
-    <>
-      {session.user.role !== "staff" ? (
-        <p className="text-center text-red-600">Admin only</p>
-      ) : (
-        !isLoadingEditEvent && (
-          <div className="w-full gap-1 px-1">
-            <p>{session.user.role}</p>
-            <div className="flex justify-end">
-              <Button
-                label="Dashboard"
-                className="bg-red-500"
-                onClick={() => navigate("/dashboard")}
-              >
-                Cancel
-              </Button>
-            </div>
-            <div className="max-w-[560px] mx-auto pt-10">
-              <form
-                className="flex flex-col gap-2"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                <div>
-                  <label>Title:</label>
-                  <input
-                    className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
-                      errors.title && "border-red-600"
-                    }`}
-                    placeholder="Enter event title"
-                    defaultValue={editEvent?.title || ""}
-                    {...register("title", { required: true, minLength: 5 })}
-                  />
-                  {errors.title?.type === "required" && (
-                    <ErrorMessage>Title is required</ErrorMessage>
-                  )}
-                  {errors.title?.type === "minLength" && (
-                    <ErrorMessage>
-                      Title is required to be at least 5 characters
-                    </ErrorMessage>
-                  )}
-                </div>
-                <div>
-                  <label>Description:</label>
-                  <input
-                    className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
-                      errors.description && "border-red-600"
-                    }`}
-                    placeholder="Enter event description"
-                    defaultValue={editEvent?.description || ""}
-                    {...register("description", {
-                      required: true,
-                      minLength: 5,
-                    })}
-                  />
-                  {errors.description?.type === "required" && (
-                    <ErrorMessage>Description is required</ErrorMessage>
-                  )}
-                  {errors.description?.type === "minLength" && (
-                    <ErrorMessage>
-                      Description is required to be at least 5 characters
-                    </ErrorMessage>
-                  )}
-                </div>
-                <div>
-                  <label>Location:</label>
-                  <input
-                    className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
-                      errors.location && "border-red-600"
-                    }`}
-                    defaultValue={editEvent?.location || ""}
-                    placeholder="Enter event location"
-                    {...register("location", { required: true, minLength: 2 })}
-                  />
-                  {errors.location?.type === "required" && (
-                    <ErrorMessage>Location is required</ErrorMessage>
-                  )}
-                  {errors.location?.type === "minLength" && (
-                    <ErrorMessage>
-                      Location is required to be at least 2 characters
-                    </ErrorMessage>
-                  )}
-                </div>
-                <div>
-                  <label>Price (£):</label>
-                  <input
-                    type="number"
-                    min={0}
-                    className={`border-2 p-2 border-gray-600 rounded-lg w-full`}
-                    placeholder="Enter event price"
-                    defaultValue={editEvent?.price || 0}
-                    {...register("price", { min: 0 })}
-                  />
-                </div>
-                <div>
-                  <label>Theme:</label>
-                  <input
-                    className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
-                      errors.theme && "border-red-600"
-                    }`}
-                    placeholder="Enter event theme"
-                    defaultValue={editEvent?.theme || ""}
-                    {...register("theme", { required: true, minLength: 2 })}
-                  />
-                  {errors.theme?.type === "required" && (
-                    <ErrorMessage>Theme is required</ErrorMessage>
-                  )}
-                  {errors.theme?.type === "minLength" && (
-                    <ErrorMessage>
-                      Theme is required to be at least 2 characters
-                    </ErrorMessage>
-                  )}
-                </div>
-                <div>
-                  <label>Date (Start to end):</label>
-                  <div className="pt-2">
-                    <Datepicker
-                      value={date}
-                      onChange={(date) => setDate(date)}
-                    />
-                  </div>
-                </div>
-                {dateError && <ErrorMessage>{dateError}</ErrorMessage>}
-                <hr />
-                <Button label="Update Calendar Event" type="submit">
-                  Update Calendar Event
-                </Button>
-              </form>
+  return isLoadingEditEvent ? (
+    <Loading />
+  ) : (
+    <div className="w-full gap-1 px-1">
+      <div className="flex justify-end">
+        <Button
+          label="Dashboard"
+          className="bg-red-500"
+          onClick={() => navigate("/dashboard")}
+        >
+          Cancel
+        </Button>
+      </div>
+      <div className="max-w-[560px] mx-auto pt-10">
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <label>Title:</label>
+            <input
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
+                errors.title && "border-red-600"
+              }`}
+              placeholder="Enter event title"
+              defaultValue={editEvent.title}
+              {...register("title", { required: true, minLength: 5 })}
+            />
+            {errors.title?.type === "required" && (
+              <ErrorMessage>Title is required</ErrorMessage>
+            )}
+            {errors.title?.type === "minLength" && (
+              <ErrorMessage>
+                Title is required to be at least 5 characters
+              </ErrorMessage>
+            )}
+          </div>
+          <div>
+            <label>Description:</label>
+            <input
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
+                errors.title && "border-red-600"
+              }`}
+              placeholder="Enter event description"
+              defaultValue={editEvent.description}
+              {...register("description", { required: true, minLength: 5 })}
+            />
+            {errors.description?.type === "required" && (
+              <ErrorMessage>Description is required</ErrorMessage>
+            )}
+            {errors.description?.type === "minLength" && (
+              <ErrorMessage>
+                Description is required to be at least 5 characters
+              </ErrorMessage>
+            )}
+          </div>
+          <div>
+            <label>Location:</label>
+            <input
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
+                errors.title && "border-red-600"
+              }`}
+              placeholder="Enter event location"
+              defaultValue={editEvent.location}
+              {...register("location", { required: true, minLength: 2 })}
+            />
+            {errors.location?.type === "required" && (
+              <ErrorMessage>Location is required</ErrorMessage>
+            )}
+            {errors.location?.type === "minLength" && (
+              <ErrorMessage>
+                Location is required to be at least 2 characters
+              </ErrorMessage>
+            )}
+          </div>
+          <div>
+            <label>Price (£):</label>
+            <input
+              type="number"
+              min={0}
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full`}
+              placeholder="Enter event price"
+              defaultValue={editEvent.price}
+              {...register("price", { min: 0 })}
+            />
+          </div>
+          <div>
+            <label>Theme:</label>
+            <input
+              className={`border-2 p-2 border-gray-600 rounded-lg w-full ${
+                errors.title && "border-red-600"
+              }`}
+              placeholder="Enter event theme"
+              defaultValue={editEvent.theme}
+              {...register("theme", { required: true, minLength: 2 })}
+            />
+            {errors.theme?.type === "required" && (
+              <ErrorMessage>Theme is required</ErrorMessage>
+            )}
+            {errors.theme?.type === "minLength" && (
+              <ErrorMessage>
+                Theme is required to be at least 2 characters
+              </ErrorMessage>
+            )}
+          </div>
+          <div>
+            <label>Date (Start to end):</label>
+            <div className="pt-2">
+              <Datepicker value={date} onChange={(date) => setDate(date)} />
             </div>
           </div>
-        )
-      )}
-    </>
+          {dateError && <ErrorMessage>{dateError}</ErrorMessage>}
+          <hr />
+          <Button label="UpdateCalendarEvent" type="submit">
+            Update Calendar Event
+          </Button>
+        </form>
+      </div>
+      <div className="flex justify-center pt-5">
+        <DeleteEventButton
+          eventId={id!}
+          userToken={session?.access_token!}
+          onDeleteSuccess={handleDeleteSuccess}
+        />
+      </div>
+    </div>
   );
 };
 

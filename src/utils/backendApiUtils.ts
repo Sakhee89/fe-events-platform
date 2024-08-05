@@ -121,3 +121,9 @@ export const getEventsbyAttendee = async (
     },
   });
 };
+
+export const getUserById = async (
+  uId: string
+): Promise<{ data: { user: User } }> => {
+  return backendApi.get(`/api/users/${uId}`);
+};

@@ -7,6 +7,8 @@ import CreateEvent from "./pages/event/CreateEvent";
 import EditEvent from "./pages/event/EditEvent";
 import ViewEvent from "./pages/event/ViewEvent";
 import EnrolledEvent from "./pages/event/EnrolledEvent";
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
+import NotAuthorized from "./pages/NotAuthorized";
 
 function App() {
   const { isLoading } = useSessionContext();
@@ -21,10 +23,25 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="event/create" element={<CreateEvent />} />
-          <Route path="event/edit/:id" element={<EditEvent />} />
+          <Route
+            path="event/create"
+            element={
+              <ProtectedRoute>
+                <CreateEvent />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="event/edit/:id"
+            element={
+              <ProtectedRoute>
+                <EditEvent />
+              </ProtectedRoute>
+            }
+          />
           <Route path="event/view/:id" element={<ViewEvent />} />
           <Route path="event/enrolled/:id" element={<EnrolledEvent />} />
+          <Route path="not-authorized" element={<NotAuthorized />} />
         </Route>
       </Routes>
     </div>
