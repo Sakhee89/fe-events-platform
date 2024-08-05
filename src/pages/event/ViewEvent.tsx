@@ -100,7 +100,7 @@ const ViewEvent = () => {
         providerToken
       );
 
-      const backendAttendeeResponse = await addAttendeeToEvent(id!, authToken);
+      await addAttendeeToEvent(id!, authToken);
 
       navigate("/dashboard");
     } catch (error) {
