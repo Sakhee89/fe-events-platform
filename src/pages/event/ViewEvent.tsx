@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   addAttendeeToEvent,
   getEventById,
   getPaymentIntent,
 } from "../../utils/backendApiUtils";
-import { Attendee, Event } from "../../types/types";
+import { Event } from "../../types/types";
 import Loading from "../../components/loading/Loading";
 import Button from "../../components/button/Button";
 import {
@@ -24,6 +24,7 @@ const ViewEvent = () => {
   const { id } = useParams();
   const session = useSession();
   const supabase = useSupabaseClient();
+  const navigate = useNavigate();
 
   const [event, setEvent] = useState<Omit<Event, "_id" | "createdBy" | "__v">>({
     title: "",
@@ -108,6 +109,7 @@ const ViewEvent = () => {
       const backendAttendeeResponse = await addAttendeeToEvent(id!, authToken);
 
       console.log("backendAttendeeResponse", backendAttendeeResponse.data);
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
 
