@@ -4,6 +4,12 @@
 
 This is the frontend for the Events Platform application, built using React. It provides a user-friendly interface for browsing, creating, and managing events.
 
+## Hosting & URLs
+
+The frontend of the Events Platform is hosted on Vercel. You can access the live application at the following URL:
+
+Live URL: https://fe-events-platform.vercel.app
+
 ## <a name="tech-stack">⚙️ Tech Stack:</a>
 
 - TypeScript.js

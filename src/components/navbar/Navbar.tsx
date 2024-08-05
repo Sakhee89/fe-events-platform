@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Button from "../button/Button";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Link } from "react-router-dom";

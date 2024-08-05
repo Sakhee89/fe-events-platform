@@ -1,5 +1,5 @@
 import { useSession } from "@supabase/auth-helpers-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getEventsbyAttendee } from "../../utils/backendApiUtils";
 import { Event } from "../../types/types";
 import UpcomingEventCard from "./UpcomingEventCard";
