@@ -85,7 +85,7 @@ const EventSearchBar = () => {
 
       <section className="mt-8">
         {searchResults.length > 0 ? (
-          <div className="grid grid-cols-2 gap-10 px-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-3">
             {searchResults.map((event: Event) => (
               <Link key={event._id} to={`/event/view/${event._id}`}>
                 <EventCard event={event} />
