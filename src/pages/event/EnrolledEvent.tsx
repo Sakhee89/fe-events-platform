@@ -31,8 +31,6 @@ const EnrolledEvent = () => {
   const [isLoadingEvent, setLoadingEvent] = useState<boolean>(true);
 
   const attend = async (event: Event) => {
-    console.log("attendHandler");
-
     const providerToken = session!.provider_token!;
     const authToken = session!.access_token!;
 
@@ -42,20 +40,11 @@ const EnrolledEvent = () => {
         providerToken
       );
 
-      console.log("getCalendarEventResponse", getCalendarEventResponse);
       const currentEvent = getCalendarEventResponse.data;
-
-      console.log("currentEvent.attendees", currentEvent.attendees);
 
       if (currentEvent.attendees === undefined) {
         currentEvent.attendees = [];
       }
-
-      console.log("session?.user.email", session?.user.email);
-      console.log(
-        "currentEvent.attendees.length > 0",
-        currentEvent.attendees.length > 0
-      );
 
       if (
         !currentEvent.attendees
@@ -71,8 +60,6 @@ const EnrolledEvent = () => {
         ];
       }
 
-      console.log("Event to update", currentEvent);
-
       await patchCalendarEventRequest(
         {
           summary: currentEvent.summary,
@@ -86,9 +73,7 @@ const EnrolledEvent = () => {
         providerToken
       );
 
-      const backendAttendeeResponse = await addAttendeeToEvent(id!, authToken);
-
-      console.log("backendAttendeeResponse", backendAttendeeResponse.data);
+      await addAttendeeToEvent(id!, authToken);
     } catch (error) {
       console.log(error);
 

@@ -82,7 +82,6 @@ export const createUser = async (newUser: {
 };
 
 export const deleteEvent = async (id: string, token: string) => {
-  console.log(id);
   await backendApi.delete(`/api/events/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,

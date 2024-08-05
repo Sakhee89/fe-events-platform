@@ -56,8 +56,6 @@ const ViewEvent = () => {
       return;
     }
 
-    console.log("attendHandler");
-
     const providerToken = session!.provider_token!;
     const authToken = session!.access_token!;
 
@@ -67,7 +65,6 @@ const ViewEvent = () => {
         providerToken
       );
 
-      console.log("getCalendarEventResponse", getCalendarEventResponse);
       const currentEvent = getCalendarEventResponse.data;
 
       if (currentEvent.attendees === undefined) {
@@ -90,9 +87,6 @@ const ViewEvent = () => {
         },
       ];
 
-      console.log("Event to update", currentEvent);
-
-      //patchCalendarEvent
       await patchCalendarEventRequest(
         {
           summary: currentEvent.summary,
@@ -108,11 +102,8 @@ const ViewEvent = () => {
 
       const backendAttendeeResponse = await addAttendeeToEvent(id!, authToken);
 
-      console.log("backendAttendeeResponse", backendAttendeeResponse.data);
       navigate("/dashboard");
     } catch (error) {
-      console.log(error);
-
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
           alert("Session timeout - Please relogin");
@@ -123,8 +114,6 @@ const ViewEvent = () => {
   };
 
   const purchaseEnrollmentHandler = async () => {
-    console.log(purchaseEnrollmentHandler);
-
     const authToken = session!.access_token!;
 
     try {

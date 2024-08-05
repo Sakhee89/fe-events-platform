@@ -73,12 +73,8 @@ const EditEvent = () => {
       location: fieldValues.location,
     };
 
-    console.log("event", event);
-
     const providerToken = session!.provider_token!;
     const authToken = session!.access_token!;
-
-    console.log("editEvent.eventId!", editEvent.eventId!);
 
     try {
       const response = await patchCalendarEventRequest(
@@ -87,25 +83,20 @@ const EditEvent = () => {
         providerToken
       );
 
-      console.log("updateCalendarEventRequest - response", response.data);
-
-      console.log(
-        "updateEvent - response",
-        await updateEvent(
-          id!,
-          {
-            title: event.summary,
-            description: event.description,
-            location: event.location,
-            date: convertedStartDate.toISOString(),
-            endDate: convertedEndDate.toISOString(),
-            price: fieldValues.price,
-            theme: fieldValues.theme,
-            calendarId: session?.user.email!,
-            eventId: response.data.id,
-          },
-          authToken
-        )
+      await updateEvent(
+        id!,
+        {
+          title: event.summary,
+          description: event.description,
+          location: event.location,
+          date: convertedStartDate.toISOString(),
+          endDate: convertedEndDate.toISOString(),
+          price: fieldValues.price,
+          theme: fieldValues.theme,
+          calendarId: session?.user.email!,
+          eventId: response.data.id,
+        },
+        authToken
       );
 
       navigate("/dashboard");
