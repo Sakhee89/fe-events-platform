@@ -37,6 +37,7 @@ const EnrolledEvent = () => {
     try {
       const getCalendarEventResponse = await getCalendarEventRequest(
         event.eventId!,
+        event.calendarId!,
         providerToken
       );
 
@@ -70,6 +71,7 @@ const EnrolledEvent = () => {
           attendees: currentEvent.attendees,
         },
         event.eventId!,
+        event.calendarId!,
         providerToken
       );
 

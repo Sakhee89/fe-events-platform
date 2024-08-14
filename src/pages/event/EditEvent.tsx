@@ -79,6 +79,7 @@ const EditEvent = () => {
     try {
       const response = await patchCalendarEventRequest(
         event,
+        editEvent.calendarId!,
         editEvent.eventId!,
         providerToken
       );

@@ -2,15 +2,17 @@ import axios from "axios";
 import { GoogleCalendarEvent, GoogleEvent } from "../types/types";
 
 const googleCalendarApi = axios.create({
-  baseURL: "https://www.googleapis.com/calendar/v3/calendars/primary",
+  baseURL: "https://www.googleapis.com/calendar/v3/calendars/",
 });
 
 export const getCalendarEventRequest = async (
   eventId: string,
+  eventOwnerEmail: string,
   providerToken: string
 ) => {
+  console.log(eventId);
   return await googleCalendarApi.get<GoogleCalendarEvent>(
-    "/events/" + eventId,
+    eventOwnerEmail + `/events/` + eventId,
     {
       headers: {
         Authorization: `Bearer ` + providerToken,
@@ -21,9 +23,10 @@ export const getCalendarEventRequest = async (
 
 export const createCalendarEventRequest = async (
   event: GoogleEvent,
+  eventOwnerEmail: string,
   providerToken: string
 ) => {
-  return await googleCalendarApi.post("/events", event, {
+  return await googleCalendarApi.post(eventOwnerEmail + `/events/`, event, {
     headers: {
       Authorization: `Bearer ` + providerToken,
     },
@@ -33,11 +36,16 @@ export const createCalendarEventRequest = async (
 export const patchCalendarEventRequest = async (
   event: GoogleEvent,
   eventId: string,
+  eventOwnerEmail: string,
   providerToken: string
 ) => {
-  return await googleCalendarApi.patch("/events/" + eventId, event, {
-    headers: {
-      Authorization: `Bearer ` + providerToken,
-    },
-  });
+  return await googleCalendarApi.patch(
+    eventOwnerEmail + `/events/` + eventId,
+    event,
+    {
+      headers: {
+        Authorization: `Bearer ` + providerToken,
+      },
+    }
+  );
 };

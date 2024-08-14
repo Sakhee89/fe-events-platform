@@ -62,6 +62,7 @@ const ViewEvent = () => {
     try {
       const getCalendarEventResponse = await getCalendarEventRequest(
         event.eventId,
+        event.calendarId!,
         providerToken
       );
 
@@ -97,6 +98,7 @@ const ViewEvent = () => {
           attendees: currentEvent.attendees,
         },
         event.eventId,
+        event.calendarId!,
         providerToken
       );
 

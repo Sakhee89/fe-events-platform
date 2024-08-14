@@ -35,6 +35,11 @@ export interface GoogleEvent {
   };
   location: string;
   attendees?: Attendee[];
+  anyoneCanAddSelf?: boolean;
+  visibility?: string;
+  guestsCanInviteOthers?: boolean;
+  guestsCanModify?: boolean;
+  guestsCanSeeOtherGuests?: boolean;
 }
 
 export interface Attendee {

@@ -50,13 +50,19 @@ const CreateEvent = () => {
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
       location: fieldValues.location,
+      anyoneCanAddSelf: true,
+      visibility: "public",
     };
 
     const providerToken = session!.provider_token!;
     const authToken = session!.access_token!;
 
     try {
-      const response = await createCalendarEventRequest(event, providerToken);
+      const response = await createCalendarEventRequest(
+        event,
+        session!.user.email!,
+        providerToken
+      );
 
       await createEvent(
         {
