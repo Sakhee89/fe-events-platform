@@ -10,7 +10,6 @@ export const getCalendarEventRequest = async (
   eventOwnerEmail: string,
   providerToken: string
 ) => {
-  console.log(eventId);
   return await googleCalendarApi.get<GoogleCalendarEvent>(
     eventOwnerEmail + `/events/` + eventId,
     {
