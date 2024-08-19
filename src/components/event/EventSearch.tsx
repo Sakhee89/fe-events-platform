@@ -12,7 +12,7 @@ const EventSearchBar = () => {
     location: "",
     theme: "",
     priceType: "",
-    date: "",
+    sortOrder: "newest",
   });
   const [searchResults, setSearchResults] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
@@ -72,12 +72,15 @@ const EventSearchBar = () => {
           <option value="free">Free</option>
           <option value="paid">Paid</option>
         </select>
-        <input
-          type="date"
-          name="startDate"
-          value={searchParams.date}
+        <select
+          name="sortOrder"
+          value={searchParams.sortOrder}
           onChange={handleInputChange}
-        />
+        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+
         <Button disabled={loading} label="search" onClick={handleSearch}>
           {loading ? <Loading /> : "Search"}
         </Button>
