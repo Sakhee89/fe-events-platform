@@ -20,7 +20,7 @@ const EventCard = ({ event }: EventCardProp) => {
         <span className="font-semibold text-blue-500">{event.theme}</span>
       </p>
       <p>
-        <b>Price:</b> {event.price === 0 ? "Free" : `$${event.price}`}
+        <b>Price:</b> {event.price === 0 ? "Free" : `£${event.price}`}
       </p>
       <p>{event.description}</p>
     </div>
