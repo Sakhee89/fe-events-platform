@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { addAttendeeToEvent, getEventById } from "../../utils/backendApiUtils";
-import { Event } from "../../types/types";
+import { Event, GoogleEvent } from "../../types/types";
 import Loading from "../../components/loading/Loading";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
+  createCalendarEventRequest,
   getCalendarEventRequest,
-  patchCalendarEventRequest,
+  // patchCalendarEventRequest,
 } from "../../utils/googleCalendarUtil";
 import { AxiosError } from "axios";
 
@@ -61,17 +62,25 @@ const EnrolledEvent = () => {
         ];
       }
 
-      await patchCalendarEventRequest(
-        {
-          summary: currentEvent.summary,
-          description: currentEvent.summary,
-          start: currentEvent.start,
-          end: currentEvent.end,
-          location: currentEvent.location,
-          attendees: currentEvent.attendees,
+      const calendarEvent: GoogleEvent = {
+        summary: currentEvent.summary,
+        description: currentEvent.description,
+        start: {
+          dateTime: currentEvent.start.dateTime,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         },
-        event.eventId!,
-        event.calendarId!,
+        end: {
+          dateTime: currentEvent.end.dateTime,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        },
+        location: currentEvent.location,
+        anyoneCanAddSelf: true,
+        visibility: "public",
+      };
+
+      await createCalendarEventRequest(
+        calendarEvent,
+        session!.user.email!,
         providerToken
       );
 
