@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Button from "../../components/button/Button";
-import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
 import { GoogleEvent } from "../../types/types";
@@ -9,6 +8,10 @@ import { FieldValues, useForm } from "react-hook-form";
 import ErrorMessage from "../../components/form/ErrorMessage";
 import { AxiosError } from "axios";
 import { createEvent } from "../../utils/backendApiUtils";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
 
 const CreateEvent = () => {
   const {
@@ -20,33 +23,29 @@ const CreateEvent = () => {
   const session = useSession();
   const supabase = useSupabaseClient();
 
-  const [date, setDate] = useState<DateValueType>({
-    startDate: new Date(),
-    endDate: new Date(),
-  });
+  type ValuePiece = Date | null;
 
+  const [startDateTime, setStartDateTime] = useState<ValuePiece>(new Date());
+  const [endDateTime, setEndDateTime] = useState<ValuePiece>(new Date());
   const [dateError, setDateError] = useState<string>("");
 
   const onSubmit = async (fieldValues: FieldValues) => {
-    if (!date?.startDate || !date?.endDate) {
-      setDateError("Date must be set");
+    if (!startDateTime || !endDateTime) {
+      setDateError("Start and end dates must be set");
       return;
     }
 
     setDateError("");
 
-    const convertedStartDate = new Date(date?.startDate);
-    const convertedEndDate = new Date(date?.endDate);
-
     const event: GoogleEvent = {
       summary: fieldValues.title,
       description: fieldValues.description,
       start: {
-        dateTime: convertedStartDate,
+        dateTime: startDateTime?.toISOString() || "",
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
       end: {
-        dateTime: convertedEndDate,
+        dateTime: endDateTime?.toISOString() || "",
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
       location: fieldValues.location,
@@ -69,8 +68,8 @@ const CreateEvent = () => {
           title: event.summary,
           description: event.description,
           location: event.location,
-          date: convertedStartDate.toISOString(),
-          endDate: convertedEndDate.toISOString(),
+          date: startDateTime?.toISOString() || "",
+          endDate: endDateTime?.toISOString() || "",
           price: fieldValues.price,
           theme: fieldValues.theme,
           attendees: [],
@@ -86,6 +85,8 @@ const CreateEvent = () => {
         if (error.response?.status === 401) {
           alert("Session timeout - Please relogin");
           await supabase.auth.signOut();
+        } else {
+          alert("Failed to create event");
         }
       }
     }
@@ -195,14 +196,29 @@ const CreateEvent = () => {
             )}
           </div>
           <div>
-            <label>Date (Start to end):</label>
+            <label>Date and Time (Start to End):</label>
             <div className="pt-2">
-              <Datepicker value={date} onChange={(date) => setDate(date)} />
+              <div className="flex gap-4">
+                <div>
+                  <label>Start Date & Time:</label>
+                  <DateTimePicker
+                    onChange={setStartDateTime}
+                    value={startDateTime}
+                  />
+                </div>
+                <div>
+                  <label>End Date & Time:</label>
+                  <DateTimePicker
+                    onChange={setEndDateTime}
+                    value={endDateTime}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           {dateError && <ErrorMessage>{dateError}</ErrorMessage>}
           <hr />
-          <Button label="CreateCalendarEvent" type="submit">
+          <Button label="Create Calendar Event" type="submit">
             Create Calendar Event
           </Button>
         </form>
